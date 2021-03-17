@@ -1,0 +1,13 @@
+[package]
+name = "iota_value_spammer"
+version = "0.1.0"
+authors = ["Thoralf-M"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+iota-core = {git = "https://github.com/iotaledger/iota.rs", rev = "527a5d833bacfeac1ad67cd1989eed7686cedc75" }
+hex = "0.4.2"
+dotenv = "0.15.0"
+tokio = { version = "1.1"}
