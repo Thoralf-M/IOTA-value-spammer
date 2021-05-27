@@ -1,4 +1,7 @@
-use iota::{client::Result, Client, Essence, Output, Payload, Seed, UTXOInput};
+use iota_client::{
+    bee_message::prelude::{Essence, Output, Payload, UtxoInput},
+    Client, Result, Seed,
+};
 extern crate dotenv;
 use dotenv::dotenv;
 use std::env;
@@ -72,7 +75,7 @@ async fn main() -> Result<()> {
     let message = message_builder.finish().await?;
 
     println!(
-        "Splitting transaction sent: https://explorer.iota.org/chrysalis/message/{}",
+        "Splitting transaction sent: https://explorer.iota.org/testnet/message/{}",
         message.id().0
     );
     let _ = iota
@@ -80,15 +83,14 @@ async fn main() -> Result<()> {
         .await?;
     let mut outputs = Vec::new();
     if let Some(Payload::Transaction(tx)) = message.payload() {
-        if let Essence::Regular(essence) = tx.essence() {
-            for address in addresses.clone() {
-                for (index, output) in essence.outputs().iter().enumerate() {
-                    if let Output::SignatureLockedSingle(output) = output {
-                        if output.address().to_bech32(&bech32_hrp) == *address
-                            && output.amount() == DUST_THRESHOLD
-                        {
-                            outputs.push(UTXOInput::new(tx.id(), index as u16)?);
-                        }
+        let Essence::Regular(essence) = tx.essence();
+        for address in addresses.clone() {
+            for (index, output) in essence.outputs().iter().enumerate() {
+                if let Output::SignatureLockedSingle(output) = output {
+                    if output.address().to_bech32(&bech32_hrp) == *address
+                        && output.amount() == DUST_THRESHOLD
+                    {
+                        outputs.push(UtxoInput::new(tx.id(), index as u16)?);
                     }
                 }
             }
@@ -112,21 +114,20 @@ async fn main() -> Result<()> {
                 Ok(message) => {
                     let id = message.id().0;
                     println!(
-                        "Transaction {} sent: https://explorer.iota.org/chrysalis/message/{}",
+                        "Transaction {} sent: https://explorer.iota.org/testnet/message/{}",
                         round * output_amount as usize + i,
                         id
                     );
                     // update output
                     if let Some(Payload::Transaction(tx)) = message.payload() {
-                        if let Essence::Regular(essence) = tx.essence() {
-                            for address in addresses.clone() {
-                                for (index, output) in essence.outputs().iter().enumerate() {
-                                    if let Output::SignatureLockedSingle(output) = output {
-                                        if output.address().to_bech32(&bech32_hrp) == *address
-                                            && output.amount() == DUST_THRESHOLD
-                                        {
-                                            outputs[i] = UTXOInput::new(tx.id(), index as u16)?;
-                                        }
+                        let Essence::Regular(essence) = tx.essence();
+                        for address in addresses.clone() {
+                            for (index, output) in essence.outputs().iter().enumerate() {
+                                if let Output::SignatureLockedSingle(output) = output {
+                                    if output.address().to_bech32(&bech32_hrp) == *address
+                                        && output.amount() == DUST_THRESHOLD
+                                    {
+                                        outputs[i] = UtxoInput::new(tx.id(), index as u16)?;
                                     }
                                 }
                             }
