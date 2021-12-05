@@ -17,7 +17,6 @@ async fn main() -> Result<()> {
     let output_amount = env::var("amount").unwrap().parse::<u64>().unwrap();
 
     let iota = Client::builder()
-        .with_node("https://api.lb-0.testnet.chrysalis2.com")?
         .finish()
         .await?;
     let bech32_hrp = iota.get_bech32_hrp().await?;

@@ -2,12 +2,12 @@
 name = "iota_value_spammer"
 version = "0.1.0"
 authors = ["Thoralf-M"]
-edition = "2018"
+edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-iota-client = {git = "https://github.com/iotaledger/iota.rs", rev = "3e5af8438347feb0d4421ee3db2759976d335057" }
+iota-client = {git = "https://github.com/iotaledger/iota.rs", rev = "2c8db67580995127ccfdbf012c5c86ce12d4a3bc" }
 hex = "0.4"
 dotenv = "0.15"
-tokio = { version = "1.5"}
+tokio = { version = "1.12"}
